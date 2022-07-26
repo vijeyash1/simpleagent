@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"log"
 
-	"encoding/json"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,13 +16,13 @@ func (app *jsPool) GitHandler(c *gin.Context) {
 		log.Println("Error reading request body:", err)
 		return
 	}
-	metricsJson, _ := json.Marshal(payload)
+
 	// Publish the message to the stream
-	if _, err := app.js.Publish(eventSubject, metricsJson); err != nil {
+	if _, err := app.js.Publish(eventSubject, payload); err != nil {
 		log.Println("Error publishing to stream:", err)
 		return
 	}
-	fmt.Println(string(metricsJson))
+	fmt.Println(string(payload))
 	log.Printf("Metrics with eventSubject:%s has been published\n", eventSubject)
 
 }
